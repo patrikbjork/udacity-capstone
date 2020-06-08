@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-config
+  labels:
+    app: api
+data:
+  PG_URL: jdbc:postgresql://postgres:5432/postgres
+  PG_USERNAME: postgres
+  PG_PASSWORD: postgres

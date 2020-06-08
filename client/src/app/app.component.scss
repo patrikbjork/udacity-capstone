@@ -1,0 +1,18 @@
+//@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import '~@angular/material/theming';
+
+mat-toolbar {
+  //align-items: flex-start;
+  display: flex;
+  //justify-items: center;
+}
+
+.right-align {
+  margin-left: auto;
+}
+
+footer {
+  background: mat-color(mat-palette($mat-deep-purple));
+  color: #ffffff;
+  padding: 24px;
+}
