@@ -1,0 +1,4 @@
+<span *ngFor="let user of users$ | async">
+<!--  {{user.nickname}} <img src="{{user.picture}}"/>-->
+  <app-profile-card [nickName]="user.nickname" [imageUrl]="user.picture"></app-profile-card>
+</span>

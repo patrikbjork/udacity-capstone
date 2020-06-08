@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/")
-public class TestController {
+@RequestMapping("/api/public")
+public class PublicController {
 
     @Autowired
     private TestRepository testRepository;
@@ -33,8 +33,8 @@ public class TestController {
         }
     }
 
-    @RequestMapping(value = "/{env}", method = RequestMethod.GET)
-    public String get(@PathVariable("env") String env) {
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String get() {
         return myEnv;
 //        return System.getenv(myEnv);
     }

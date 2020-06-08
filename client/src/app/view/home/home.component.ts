@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.http.get<any[]>('/api/test').subscribe(result => this.items = result);
+    this.http.get<any[]>('/api/api/private/test').subscribe(result => this.items = result);
   }
 
 }
