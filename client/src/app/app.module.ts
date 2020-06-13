@@ -12,6 +12,9 @@ import {HttpInterceptorService} from './service/http-interceptor.service';
 import { UsersComponent } from './view/users/users.component';
 import { ProfileCardComponent } from './component/profile-card/profile-card.component';
 import {MatCardModule} from '@angular/material/card';
+import { ChatComponent } from './view/chat/chat.component';
+import {FormsModule} from '@angular/forms';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -19,15 +22,18 @@ import {MatCardModule} from '@angular/material/card';
     HomeComponent,
     ProfileComponent,
     UsersComponent,
-    ProfileCardComponent
+    ProfileCardComponent,
+    ChatComponent
   ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
+        FormsModule,
         HttpClientModule,
         MatToolbarModule,
-        MatCardModule
+        MatCardModule,
+        MatMenuModule
     ],
   providers: [
     {

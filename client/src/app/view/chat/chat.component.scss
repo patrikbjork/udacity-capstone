@@ -1,0 +1,25 @@
+.my-message {
+  margin-right: 24px;
+  text-align: right;
+}
+
+.chat-container {
+  max-width: 300px;
+}
+
+.chat-message-row {
+  height: 32px;
+}
+
+.message {
+  border-radius: 4px;
+  max-width: 200px;
+  background-color: #3d3b4b;
+  color: #eeeeee;
+  display: inline-block;
+  padding: 4px 8px;
+
+  &.my-message {
+    background-color: #3c6f97;
+  }
+}

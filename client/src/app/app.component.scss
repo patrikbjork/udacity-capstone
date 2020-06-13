@@ -16,3 +16,36 @@ footer {
   color: #ffffff;
   padding: 24px;
 }
+
+.avatar {
+  border-radius: 50%;
+  height: 32px;
+  margin-right: 8px;
+  width: 32px;
+}
+
+mat-toolbar > a[routerLink] {
+  box-sizing: border-box;
+  display: inline-block;
+  height: 100%;
+  line-height: 64px;
+  /* vertical-align: middle; */
+  //flex-flow: auto;
+  //color: $light-primary-text;
+  //color: #fff;
+  //text-decoration: none;
+  margin: 0 16px;
+  border-bottom: 8px solid mat-color(mat-palette($mat-deep-purple));
+
+  &:hover, &.active {
+    border-bottom: 8px solid mat-color(mat-palette($mat-amber));
+  }
+
+}
+
+mat-toolbar {
+  a {
+    color: $light-primary-text;
+    text-decoration: none;
+  }
+}

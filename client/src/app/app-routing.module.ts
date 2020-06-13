@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {HomeComponent} from './view/home/home.component';
 import {ProfileComponent} from './view/profile/profile.component';
 import {UsersComponent} from './view/users/users.component';
+import {ChatComponent} from './view/chat/chat.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,10 @@ const routes: Routes = [
   {
     path: 'users',
     component: UsersComponent
+  },
+  {
+    path: 'chat/:userId',
+    component: ChatComponent
   },
 ];
 

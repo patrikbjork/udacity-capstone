@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-profile-card',
@@ -8,11 +9,15 @@ import {Component, Input, OnInit} from '@angular/core';
 export class ProfileCardComponent implements OnInit {
 
   @Input() imageUrl: string;
-  @Input() nickName: string;
+  @Input() name: string;
+  @Input() userId: string;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
 
+  startChatting(userId: string) {
+    this.router.navigate(['chat', userId]);
+  }
 }
