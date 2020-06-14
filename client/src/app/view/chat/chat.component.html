@@ -1,4 +1,4 @@
-<p>chat works!</p>
+<h1>Conversation with {{otherUsersName | async}}</h1>
 
 <div class="chat-container">
   <div class="chat-message-row {{message.sender === thisUserId ? 'my-message' : ''}}" *ngFor="let message of chatMessages" >

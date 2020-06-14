@@ -4,6 +4,9 @@ import {AuthService} from '../../service/auth.service';
 import {ChatMessage} from '../../domain/chat-message';
 import {ApiService} from '../../service/api.service';
 import {ServerChatMessage} from '../../domain/server-chat-message';
+import {Observable} from 'rxjs';
+import {UserInfo} from '../../domain/user-info';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat',
@@ -18,13 +21,18 @@ export class ChatComponent implements OnInit {
   currentText: string;
   thisUserId: string;
   private otherUserId: string;
+  otherUsersName: Observable<string>;
 
   constructor(private activatedRoute: ActivatedRoute,
               private auth: AuthService,
-              private api: ApiService) { }
+              public api: ApiService) { }
 
   ngOnInit(): void {
     this.otherUserId = this.activatedRoute.snapshot.params.userId;
+
+    this.otherUsersName = this.api.getUser(this.activatedRoute.snapshot.params.userId).pipe(
+      map((userInfo: UserInfo) => userInfo.name)
+    );
 
     this.auth.userProfile$.subscribe((userProfile: any) => {
       if (!userProfile) {

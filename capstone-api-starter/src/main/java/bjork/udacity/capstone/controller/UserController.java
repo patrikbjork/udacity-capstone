@@ -54,6 +54,11 @@ public class UserController {
 //        return System.getenv(myEnv);
     }
     
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+    public UserInfo get(@PathVariable("userId") String userId) {
+        return userInfoRepository.findById(userId).get();
+    }
+
     @RequestMapping(value = "/save-user", method = RequestMethod.POST)
     public ResponseEntity saveUser(HttpServletRequest request) {
 

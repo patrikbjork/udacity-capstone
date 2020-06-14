@@ -11,6 +11,10 @@
   height: 32px;
 }
 
+.my-message .message {
+  background-color: #3c6f97;
+}
+
 .message {
   border-radius: 4px;
   max-width: 200px;
@@ -18,8 +22,4 @@
   color: #eeeeee;
   display: inline-block;
   padding: 4px 8px;
-
-  &.my-message {
-    background-color: #3c6f97;
-  }
 }

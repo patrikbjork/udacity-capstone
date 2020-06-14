@@ -16,6 +16,10 @@ export class ApiService {
     return this.http.get<UserInfo[]>('/api/secure/users');
   }
 
+  getUser(userId: string): Observable<UserInfo> {
+    return this.http.get<UserInfo>('/api/secure/users/' + userId);
+  }
+
   saveUser$(): Observable<any> {
     return this.http.post('/api/secure/users/save-user', {});
   }

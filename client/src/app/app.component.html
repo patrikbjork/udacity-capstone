@@ -1,7 +1,7 @@
 <div id="container">
   <div id="header">
     <mat-toolbar color="primary">
-      <span>My Application</span>
+      <span><img id="logo" src="/assets/img/logo_200x200.png" width="72"></span>
       <a routerLink="/home" routerLinkActive="active">Home</a>&nbsp;
       <a routerLink="/profile" *ngIf="auth.loggedIn" routerLinkActive="active">Profile</a>
       <a routerLink="/users" *ngIf="auth.loggedIn" routerLinkActive="active">Users</a>
