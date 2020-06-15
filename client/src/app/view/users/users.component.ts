@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {ApiService} from '../../service/api.service';
 import {AuthService} from '../../service/auth.service';
 import {tap} from 'rxjs/operators';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-users',
@@ -48,7 +49,7 @@ export class UsersComponent implements OnInit {
 
   private initWebsocket(thisUserId: string): void {
     const protocol = window.location.protocol === 'https' ? 'wss' : 'ws';
-    this.onlineCheckWebSocket = new WebSocket('ws://localhost:8080' + '/user-online-check/' + thisUserId);
+    this.onlineCheckWebSocket = new WebSocket(environment.webSocketBaseUrl + '/user-online-check/' + thisUserId);
     this.onlineCheckWebSocket.onmessage = (messageEvent: MessageEvent) => {
       const split = messageEvent.data.split(':');
       this.usersOnlineStatus.set(split[0], split[1] === 'online');

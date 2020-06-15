@@ -1,9 +1,15 @@
 package bjork.udacity.capstone.websocket;
 
+import bjork.udacity.capstone.config.RabbitMQConfig;
 import bjork.udacity.capstone.domain.ChatMessage;
 import bjork.udacity.capstone.domain.UserInfo;
 import bjork.udacity.capstone.repository.ChatMessageRepository;
 import bjork.udacity.capstone.repository.UserInfoRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -11,11 +17,15 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static bjork.udacity.capstone.config.RabbitMQConfig.topicExchangeName;
+
 @Component
+@Slf4j
 public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     @Autowired
@@ -26,6 +36,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
     @Autowired
     private OnlineWebSocketHandler pingWebSocketHandler;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     private Map<String, WebSocketSession> userIdsToWebSocketSessions = new HashMap<>();
 
@@ -51,7 +64,26 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         chatMessage.setOpponentId(recipient);
         chatMessageRepository.save(chatMessage);
 
-        userIdsToWebSocketSessions.get(recipient).sendMessage(message);
+        MessageProperties messageProperties = new MessageProperties();
+        messageProperties.setHeader("recipient", recipient);
+
+        Message rabbitMQMessage = new Message(message.asBytes(), messageProperties);
+        rabbitTemplate.send(RabbitMQConfig.topicExchangeName, "chat-message", rabbitMQMessage);
+    }
+
+    @RabbitListener(queues = "chat-message-queue")
+    public void deliverChatMessage(Message message) throws IOException {
+        String recipient = message.getMessageProperties().getHeader("recipient");
+
+        log.info("Will see if chat message recipient is on my node: " + recipient);
+
+        WebSocketSession session = userIdsToWebSocketSessions.get(recipient);
+        if (session != null) {
+            log.info("Found: " + recipient);
+            session.sendMessage(new TextMessage(message.getBody()));
+        } else {
+            log.info("Didn't find: " + recipient);
+        }
     }
 
     @Override

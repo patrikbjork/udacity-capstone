@@ -17,6 +17,7 @@ public class RabbitMQConfig {
 
     public static final String queueName = "user-online-check-queue";
     public static final String replyQueueName = "user-online-check-reply-queue";
+    public static final String chatMessageQueueName = "chat-message-queue";
     private final String hostName;
 
     public RabbitMQConfig() throws UnknownHostException {
@@ -31,6 +32,11 @@ public class RabbitMQConfig {
     @Bean
     Queue replyQueue() {
         return new Queue(replyQueueName, false);
+    }
+
+    @Bean
+    Queue chatMessageQueue() {
+        return new Queue(chatMessageQueueName, false);
     }
 
     @Bean
@@ -51,6 +57,11 @@ public class RabbitMQConfig {
     @Bean
     Binding replyBinding(TopicExchange exchange) throws UnknownHostException {
         return BindingBuilder.bind(replyQueue()).to(exchange).with("user-online-check-reply." + hostName);
+    }
+
+    @Bean
+    Binding chatMessageBinding(TopicExchange exchange) throws UnknownHostException {
+        return BindingBuilder.bind(chatMessageQueue()).to(exchange).with("chat-message");
     }
 
     /*@Bean

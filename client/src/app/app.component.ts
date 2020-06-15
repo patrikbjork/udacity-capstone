@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {AuthService} from './service/auth.service';
 import {ApiService} from './service/api.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {environment} from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -28,8 +29,7 @@ export class AppComponent {
           this.webSocket.close();
         }
 
-        const protocol = window.location.protocol === 'https' ? 'wss' : 'ws';
-        this.webSocket = new WebSocket('ws://localhost:8080' + '/ping/' + value.sub);
+        this.webSocket = new WebSocket(environment.webSocketBaseUrl + '/ping/' + value.sub);
 
         this.webSocket.onmessage = (messageEvent: MessageEvent) => {
           const split = (messageEvent.data as string).split(':');

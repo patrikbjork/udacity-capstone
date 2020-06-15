@@ -7,6 +7,7 @@ import {ServerChatMessage} from '../../domain/server-chat-message';
 import {Observable} from 'rxjs';
 import {UserInfo} from '../../domain/user-info';
 import {map} from 'rxjs/operators';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-chat',
@@ -70,7 +71,7 @@ export class ChatComponent implements OnInit {
 
   private initWebsocket(): void {
     const protocol = window.location.protocol === 'https' ? 'wss' : 'ws';
-    this.chatWebSocket = new WebSocket('ws://localhost:8080' + '/chat/' + this.thisUserId + '/' + this.otherUserId);
+    this.chatWebSocket = new WebSocket(environment.webSocketBaseUrl + '/chat/' + this.thisUserId + '/' + this.otherUserId);
   }
 
 
