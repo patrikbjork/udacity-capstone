@@ -1,8 +1,8 @@
 <mat-card class="example-card">
   <mat-card-header>
-<!--    <div mat-card-avatar class="example-header-image"></div>-->
     <mat-card-title>{{name}}</mat-card-title>
-<!--    <mat-card-subtitle>Dog Breed</mat-card-subtitle>-->
+    <span class="status-online" *ngIf="online">Online</span>
+    <span class="status-offline" *ngIf="online === false">Offline</span>
   </mat-card-header>
   <img mat-card-image src="{{imageUrl}}">
   <mat-card-content>
@@ -12,6 +12,5 @@
   </mat-card-content>
   <mat-card-actions>
     <button mat-button (click)="startChatting(userId)">Chat</button>
-<!--    <button mat-button>SHARE</button>-->
   </mat-card-actions>
 </mat-card>

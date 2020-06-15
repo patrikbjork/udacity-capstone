@@ -11,7 +11,6 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -26,7 +25,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     private ChatMessageRepository chatMessageRepository;
 
     @Autowired
-    private PingWebSocketHandler pingWebSocketHandler;
+    private OnlineWebSocketHandler pingWebSocketHandler;
 
     private Map<String, WebSocketSession> userIdsToWebSocketSessions = new HashMap<>();
 

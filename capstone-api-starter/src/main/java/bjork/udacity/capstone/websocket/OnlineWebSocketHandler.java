@@ -1,8 +1,13 @@
 package bjork.udacity.capstone.websocket;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.PingMessage;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -11,8 +16,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static bjork.udacity.capstone.config.RabbitMQConfig.topicExchangeName;
+
 @Component
-public class PingWebSocketHandler extends TextWebSocketHandler {
+@Slf4j
+public class OnlineWebSocketHandler extends TextWebSocketHandler {
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     private Map<String, WebSocketSession> userIdsToWebSocketSessions = new HashMap<>();
 
@@ -20,6 +31,25 @@ public class PingWebSocketHandler extends TextWebSocketHandler {
         if (userIdsToWebSocketSessions.containsKey(recipient)) {
             userIdsToWebSocketSessions.get(recipient).sendMessage(new TextMessage(sender));
         }
+    }
+
+    @RabbitListener(queues = "user-online-check-queue")
+    public void listenToReply(Message message) throws IOException {
+        log.info("Got online check request: " + new String(message.getBody()));
+        String sessionId = message.getMessageProperties().getHeader("sessionId");
+
+        String replyTo = message.getMessageProperties().getReplyTo();
+
+        MessageProperties messageProperties = new MessageProperties();
+        messageProperties.setHeader("sessionId", sessionId);
+
+        String userId = new String(message.getBody());
+        String payload = userId + ":" + (userIdsToWebSocketSessions.get(userId) != null ? "online" : "offline");
+
+        log.info("Sending RabbitMQ reply message: " + payload);
+
+        Message rabbitMessage = new Message(payload.getBytes(), messageProperties);
+        rabbitTemplate.send(topicExchangeName, "user-online-check-reply." + replyTo, rabbitMessage);
     }
 
     @Override

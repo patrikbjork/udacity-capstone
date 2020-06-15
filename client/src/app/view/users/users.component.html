@@ -1,5 +1,5 @@
 <span *ngFor="let user of users$ | async">
 <!--  {{user.nickname}} <img src="{{user.picture}}"/>-->
-  <app-profile-card *ngIf="user.sub !== (auth.userProfile$ | async).sub" [userId]="user.sub" [name]="user.name"
+  <app-profile-card *ngIf="user.sub !== (auth.userProfile$ | async).sub" [userId]="user.sub" [name]="user.name" [online]="usersOnlineStatus.get(user.sub)"
                     [imageUrl]="user.picture"></app-profile-card>
 </span>

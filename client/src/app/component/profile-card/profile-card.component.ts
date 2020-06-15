@@ -11,6 +11,7 @@ export class ProfileCardComponent implements OnInit {
   @Input() imageUrl: string;
   @Input() name: string;
   @Input() userId: string;
+  @Input() online: boolean;
 
   constructor(private router: Router) { }
 
