@@ -56,22 +56,22 @@ export class ChatComponent implements OnInit {
         // setTimeout(() => this.chatWebSocket.send('ping'), 10000);
         // this.chatWebSocket.send('ping');
       };
-
-      this.chatWebSocket.onmessage = (messageEvent: MessageEvent) => {
-        const chatMessage = JSON.parse(messageEvent.data);
-        this.chatMessages.push(chatMessage);
-      };
-
-      this.chatWebSocket.onclose = (e: CloseEvent) => {
-        console.log(e);
-        setTimeout(() => this.initWebsocket());
-      };
     });
   }
 
   private initWebsocket(): void {
     const protocol = window.location.protocol === 'https' ? 'wss' : 'ws';
-    this.chatWebSocket = new WebSocket(environment.webSocketBaseUrl + '/chat/' + this.thisUserId + '/' + this.otherUserId);
+    this.chatWebSocket = new WebSocket(environment.webSocketBaseUrl
+      + '/chat/' + encodeURI(this.thisUserId) + '/' + encodeURI(this.otherUserId));
+
+    this.chatWebSocket.onmessage = (messageEvent: MessageEvent) => {
+      const chatMessage = JSON.parse(messageEvent.data);
+      this.chatMessages.push(chatMessage);
+    };
+
+    this.chatWebSocket.onclose = (e: CloseEvent) => {
+      setTimeout(() => this.initWebsocket());
+    };
   }
 
 

@@ -15,3 +15,10 @@ mat-card {
 .status-offline, .status-online {
   margin-left: auto;
 }
+
+@media (max-width: 599px) {
+  button {
+    height: 32px;
+    width: 100%;
+  }
+}

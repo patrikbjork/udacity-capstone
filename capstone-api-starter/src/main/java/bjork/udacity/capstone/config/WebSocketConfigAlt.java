@@ -23,9 +23,9 @@ public class WebSocketConfigAlt implements WebSocketConfigurer {
     private UserOnlineCheckWebSocketHandler userOnlineCheckWebSocketHandler;
 
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(chatWebSocketHandler, "/chat/{token}/{recipient}").setAllowedOrigins("*");
-        registry.addHandler(pingWebSocketHandler, "/ping/{token}").setAllowedOrigins("*");
-        registry.addHandler(userOnlineCheckWebSocketHandler, "/user-online-check/{token}").setAllowedOrigins("*");
+        registry.addHandler(chatWebSocketHandler, "/ws/chat/{token}/{recipient}").setAllowedOrigins("*");
+        registry.addHandler(pingWebSocketHandler, "/ws/ping/{token}").setAllowedOrigins("*");
+        registry.addHandler(userOnlineCheckWebSocketHandler, "/ws/user-online-check/{token}").setAllowedOrigins("*");
     }
 
 }

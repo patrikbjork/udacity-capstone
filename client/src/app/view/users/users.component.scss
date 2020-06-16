@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+
+  @media (max-width: 599px) {
+    flex-direction: column;
+
+    > span {
+      margin: 0 auto;
+      text-align: center;
+    }
+  }
+}

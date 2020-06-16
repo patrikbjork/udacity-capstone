@@ -18,6 +18,7 @@ export class UsersComponent implements OnInit {
   onlineCheckWebSocket: WebSocket;
 
   usersOnlineStatus = new Map<string, boolean>();
+  message: string | null;
 
   constructor(private api: ApiService,
               public auth: AuthService) { }
@@ -29,17 +30,21 @@ export class UsersComponent implements OnInit {
       if (!userProfile) {
         return;
       }
+      this.message = null;
       this.initWebsocket(userProfile.sub);
 
       this.users$.pipe(
         tap(users => {
+          if (users.length === 0) {
+            this.message = 'No users found. Let\'s make more people join :)';
+          }
+
           users.forEach(user => {
             this.onlineCheckWebSocket.send(user.sub);
           });
         })
       ).subscribe();
     });
-
   }
 
   onMessage(messageEvent: MessageEvent): void {
@@ -49,10 +54,15 @@ export class UsersComponent implements OnInit {
 
   private initWebsocket(thisUserId: string): void {
     const protocol = window.location.protocol === 'https' ? 'wss' : 'ws';
-    this.onlineCheckWebSocket = new WebSocket(environment.webSocketBaseUrl + '/user-online-check/' + thisUserId);
+    this.onlineCheckWebSocket = new WebSocket(environment.webSocketBaseUrl + '/user-online-check/' + encodeURI(thisUserId));
+
     this.onlineCheckWebSocket.onmessage = (messageEvent: MessageEvent) => {
       const split = messageEvent.data.split(':');
       this.usersOnlineStatus.set(split[0], split[1] === 'online');
+    };
+
+    this.onlineCheckWebSocket.onclose = () => {
+      setTimeout(() => this.initWebsocket(thisUserId));
     };
   }
 

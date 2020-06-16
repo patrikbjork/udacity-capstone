@@ -3,5 +3,5 @@ const host = window.location.host;
 
 export const environment = {
   production: true,
-  webSocketBaseUrl: protocol + '://' + host
+  webSocketBaseUrl: protocol + '://' + host + '/ws'
 };

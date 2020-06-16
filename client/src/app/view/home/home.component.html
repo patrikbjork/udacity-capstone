@@ -1,4 +1,7 @@
-<p>home works!</p>
+<h1>Welcome to this awesome chat website!</h1>
+
+<p *ngIf="auth.loggedIn === false">Login so you can pick friends in the Users tab, and start chatting.</p>
+<p *ngIf="auth.loggedIn">Great! You're logged in so you can go to <a routerLink="/users">Users</a> and pick a friend to chat with.</p>
 
 <!--<div *ngFor="let item of items">{{item.id}}</div>-->
 

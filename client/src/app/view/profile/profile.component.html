@@ -1,4 +1,29 @@
 <h1>Profile</h1>
-<pre *ngIf="auth.userProfile$ | async as profile">
-<code>{{ profile | json }}</code>
-</pre>
+
+<div *ngIf="auth.userProfile$ | async as profile">
+  <div>
+    <label>Nickname:</label>
+    <span>{{profile.nickname}}</span>
+  </div>
+
+  <div>
+    <label>Name:</label>
+    <span>{{profile.name}}</span>
+  </div>
+
+  <div>
+    <label>Picture:</label>
+    <span><img [src]="profile.picture" width="64"></span>
+  </div>
+
+  <div>
+    <label>Email:</label>
+    <span>{{profile.email}}</span>
+  </div>
+
+  <div>
+    <label>Id:</label>
+    <span>{{profile.sub}}</span>
+  </div>
+
+</div>

@@ -53,4 +53,15 @@ mat-toolbar {
 #logo {
   position: relative;
   top: 3px;
+  width: 64px;
+}
+
+@media (max-width: 599px) {
+  #logo {
+    width: 56px;
+  }
+}
+
+.ping-message {
+  margin-right: 16px;
 }

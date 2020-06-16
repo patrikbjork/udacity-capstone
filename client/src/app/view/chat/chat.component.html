@@ -7,5 +7,5 @@
 </div>
 
 <form (ngSubmit)="sendMessage()">
-  <input [(ngModel)]="currentText" name="currentText" /><input type="submit" value="Send" />
+  <input autocomplete="false" [(ngModel)]="currentText" name="currentText" /><input type="submit" value="Send" />
 </form>

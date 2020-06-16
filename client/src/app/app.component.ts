@@ -29,18 +29,26 @@ export class AppComponent {
           this.webSocket.close();
         }
 
-        this.webSocket = new WebSocket(environment.webSocketBaseUrl + '/ping/' + value.sub);
-
-        this.webSocket.onmessage = (messageEvent: MessageEvent) => {
-          const split = (messageEvent.data as string).split(':');
-          const otherUserId = split[0];
-
-          if (this.router.url !== '/chat/' + encodeURI(otherUserId)) {
-            this.pingByUserId = otherUserId;
-            this.pingByUserName = split[1];
-          }
-        };
+        this.initWebSocket(value);
       }
     });
+  }
+
+  private initWebSocket(value: any) {
+    this.webSocket = new WebSocket(environment.webSocketBaseUrl + '/ping/' + encodeURI(value.sub));
+
+    this.webSocket.onmessage = (messageEvent: MessageEvent) => {
+      const split = (messageEvent.data as string).split(':');
+      const otherUserId = split[0];
+
+      if (this.router.url !== '/chat/' + encodeURI(otherUserId)) {
+        this.pingByUserId = otherUserId;
+        this.pingByUserName = split[1];
+      }
+    };
+
+    this.webSocket.onclose = () => {
+      setTimeout(() => this.initWebSocket(value));
+    };
   }
 }

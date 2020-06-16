@@ -8,16 +8,20 @@ import {ChatComponent} from './view/chat/chat.component';
 
 const routes: Routes = [
   {
+    path: '',
+    component: HomeComponent
+  },
+  {
     path: 'home',
     component: HomeComponent
   },
   {
-    path: 'profile',
-    component: ProfileComponent
-  },
-  {
     path: 'users',
     component: UsersComponent
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
   },
   {
     path: 'chat/:userId',

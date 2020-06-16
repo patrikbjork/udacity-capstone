@@ -1,0 +1,17 @@
+
+version: "3"
+services:
+ api:
+  build:
+   context: ../capstone-api-starter
+  image: patrikb/udacity-capstone-api
+ frontend:
+  build:
+   context: ../client
+  image: patrikb/udacity-capstone-frontend
+ reverseproxy:
+  build:
+   context: ../reverseproxy/docker
+  image: patrikb/udacity-capstone-reverseproxy
+
+

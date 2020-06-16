@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {AuthService} from '../../service/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -10,10 +11,10 @@ export class HomeComponent implements OnInit {
 
   items: any[];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              public auth: AuthService) { }
 
   ngOnInit(): void {
-    this.http.get<any[]>('/api/api/private/test').subscribe(result => this.items = result);
   }
 
 }
