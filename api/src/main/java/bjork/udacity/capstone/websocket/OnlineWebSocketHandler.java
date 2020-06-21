@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static bjork.udacity.capstone.config.RabbitMQConfig.topicExchangeName;
+import static bjork.udacity.capstone.config.RabbitMQConfig.userOnlineCheckQueueName;
 
 @Component
 @Slf4j
@@ -27,14 +28,18 @@ public class OnlineWebSocketHandler extends TextWebSocketHandler {
 
     private Map<String, WebSocketSession> userIdsToWebSocketSessions = new HashMap<>();
 
-    public void pingUser(String recipient, String sender) throws IOException {
+    public void pingUser(String recipient, String sender) {
         if (userIdsToWebSocketSessions.containsKey(recipient)) {
-            userIdsToWebSocketSessions.get(recipient).sendMessage(new TextMessage(sender));
+            try {
+                userIdsToWebSocketSessions.get(recipient).sendMessage(new TextMessage(sender));
+            } catch (IOException e) {
+                log.error(e.getMessage(), e);
+            }
         }
     }
 
-    @RabbitListener(queues = "user-online-check-queue")
-    public void listenToReply(Message message) throws IOException {
+//    @RabbitListener(queues = userOnlineCheckQueueName)
+    public void handleOnlineCheckQuery(Message message) {
         log.info("Got online check request: " + new String(message.getBody()));
         String sessionId = message.getMessageProperties().getHeader("sessionId");
 
@@ -44,12 +49,16 @@ public class OnlineWebSocketHandler extends TextWebSocketHandler {
         messageProperties.setHeader("sessionId", sessionId);
 
         String userId = new String(message.getBody());
-        String payload = userId + ":" + (userIdsToWebSocketSessions.get(userId) != null ? "online" : "offline");
+        WebSocketSession webSocketSession = userIdsToWebSocketSessions.get(userId);
 
-        log.info("Sending RabbitMQ reply message: " + payload);
+        if (webSocketSession != null) {
+            String payload = userId + ":online";
 
-        Message rabbitMessage = new Message(payload.getBytes(), messageProperties);
-        rabbitTemplate.send(topicExchangeName, "user-online-check-reply." + replyTo, rabbitMessage);
+            log.info("Sending RabbitMQ reply message: " + payload);
+
+            Message rabbitMessage = new Message(payload.getBytes(), messageProperties);
+            rabbitTemplate.send(topicExchangeName, "user-online-check-reply-" + replyTo, rabbitMessage);
+        }
     }
 
     @Override

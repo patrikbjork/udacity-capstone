@@ -1,5 +1,6 @@
 package bjork.udacity.capstone.websocket;
 
+import bjork.udacity.capstone.config.RabbitMQConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static bjork.udacity.capstone.config.RabbitMQConfig.topicExchangeName;
+import static bjork.udacity.capstone.config.RabbitMQConfig.userOnlineFanoutExchangeName;
 
 @Component
 @Slf4j
@@ -34,18 +36,19 @@ public class UserOnlineCheckWebSocketHandler extends TextWebSocketHandler {
         log.info("Received websocket message: " + message.getPayload());
 
         // TODO put centrally
-        String hostName = InetAddress.getLocalHost().getHostName();
+//        String hostName = InetAddress.getLocalHost().getHostName();
+        String replyTo = RabbitMQConfig.uuid;
 
         MessageProperties messageProperties = new MessageProperties();
-        messageProperties.setReplyTo(hostName);
+        messageProperties.setReplyTo(replyTo);
         messageProperties.setHeader("sessionId", session.getId());
 
         Message rabbitMessage = new Message(message.getPayload().getBytes(), messageProperties);
-        rabbitTemplate.send(topicExchangeName, "user-online-check-query", rabbitMessage);
+        rabbitTemplate.send(userOnlineFanoutExchangeName, "user-online-check-query", rabbitMessage);
     }
 
-    @RabbitListener(queues = "user-online-check-reply-queue")
-    public void listenToReply(Message message) throws IOException {
+//    @RabbitListener(queues = "user-online-check-reply-queue")
+    public void listenToReply(Message message) {
         log.info("Got RabbitMQ reply message: " + new String(message.getBody()));
 
         String sessionId = message.getMessageProperties().getHeader("sessionId");
@@ -53,7 +56,14 @@ public class UserOnlineCheckWebSocketHandler extends TextWebSocketHandler {
         WebSocketSession webSocketSession = userIdsToWebSocketSessions.get(sessionId);
 
         if (webSocketSession != null) {
-            webSocketSession.sendMessage(new TextMessage(new String(message.getBody())));
+            log.info("Even found the websocket session :)");
+            try {
+                webSocketSession.sendMessage(new TextMessage(new String(message.getBody())));
+            } catch (IOException e) {
+                log.error(e.getMessage(), e);
+            }
+        } else {
+            log.info("Didn't find websocket session :(");
         }
     }
 

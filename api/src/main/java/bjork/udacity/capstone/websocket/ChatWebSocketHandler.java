@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static bjork.udacity.capstone.config.RabbitMQConfig.topicExchangeName;
+import static bjork.udacity.capstone.config.RabbitMQConfig.*;
 
 @Component
 @Slf4j
@@ -68,11 +68,11 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         messageProperties.setHeader("recipient", recipient);
 
         Message rabbitMQMessage = new Message(message.asBytes(), messageProperties);
-        rabbitTemplate.send(RabbitMQConfig.topicExchangeName, "chat-message", rabbitMQMessage);
+        rabbitTemplate.send(chatFanoutExchangeName, "chat-message", rabbitMQMessage);
     }
 
-    @RabbitListener(queues = "chat-message-queue")
-    public void deliverChatMessage(Message message) throws IOException {
+//    @RabbitListener(queues = "chat-message-queue")
+    public void deliverChatMessage(Message message) {
         String recipient = message.getMessageProperties().getHeader("recipient");
 
         log.info("Will see if chat message recipient is on my node: " + recipient);
@@ -80,7 +80,11 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         WebSocketSession session = userIdsToWebSocketSessions.get(recipient);
         if (session != null) {
             log.info("Found: " + recipient);
-            session.sendMessage(new TextMessage(message.getBody()));
+            try {
+                session.sendMessage(new TextMessage(message.getBody()));
+            } catch (IOException e) {
+                log.error(e.getMessage(), e);
+            }
         } else {
             log.info("Didn't find: " + recipient);
         }
@@ -95,7 +99,12 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
         Optional<UserInfo> byId = userInfoRepository.findById(userId);
 
-        pingWebSocketHandler.pingUser(recipient, userId + ":" + byId.get().getName());
+        String text = userId + ";" + byId.get().getName() + ";" + recipient;
+        Message message = new Message(text.getBytes(), new MessageProperties());
+
+        rabbitTemplate.send(pingFanoutExchangeName, "", message);
+
+//        pingWebSocketHandler.pingUser(recipient, userId + ":" + byId.get().getName());
     }
 
     @Override
