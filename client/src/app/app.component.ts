@@ -10,7 +10,6 @@ import {environment} from '../environments/environment';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'client';
 
   webSocket: WebSocket;
 
@@ -50,5 +49,10 @@ export class AppComponent {
     this.webSocket.onclose = () => {
       setTimeout(() => this.initWebSocket(value));
     };
+  }
+
+  resetPing() {
+    this.pingByUserId = '';
+    this.pingByUserName = '';
   }
 }

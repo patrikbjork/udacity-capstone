@@ -26,12 +26,12 @@ export class UsersComponent implements OnInit {
   ngOnInit(): void {
     this.users$ = this.api.getAllUsers$();
 
-    this.auth.userProfile$.subscribe(userProfile => {
+    this.auth.userProfile$.subscribe(async userProfile => {
       if (!userProfile) {
         return;
       }
       this.message = null;
-      this.initWebsocket(userProfile.sub);
+      await this.initWebsocket(userProfile.sub);
 
       this.users$.pipe(
         tap(users => {
@@ -52,18 +52,21 @@ export class UsersComponent implements OnInit {
     this.usersOnlineStatus.set(split[0], split[1] === 'online');
   }
 
-  private initWebsocket(thisUserId: string): void {
-    const protocol = window.location.protocol === 'https' ? 'wss' : 'ws';
-    this.onlineCheckWebSocket = new WebSocket(environment.webSocketBaseUrl + '/user-online-check/' + encodeURI(thisUserId));
+  private initWebsocket(thisUserId: string): Promise<void> {
+    return new Promise(resolve => {
+      this.onlineCheckWebSocket = new WebSocket(environment.webSocketBaseUrl + '/user-online-check/' + encodeURI(thisUserId));
 
-    this.onlineCheckWebSocket.onmessage = (messageEvent: MessageEvent) => {
-      const split = messageEvent.data.split(':');
-      this.usersOnlineStatus.set(split[0], split[1] === 'online');
-    };
+      this.onlineCheckWebSocket.onmessage = (messageEvent: MessageEvent) => {
+        const split = messageEvent.data.split(':');
+        this.usersOnlineStatus.set(split[0], split[1] === 'online');
+      };
 
-    this.onlineCheckWebSocket.onclose = () => {
-      setTimeout(() => this.initWebsocket(thisUserId));
-    };
+      this.onlineCheckWebSocket.onclose = () => {
+        setTimeout(() => this.initWebsocket(thisUserId));
+      };
+
+      this.onlineCheckWebSocket.onopen = () => resolve();
+    });
   }
 
 }

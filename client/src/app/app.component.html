@@ -7,7 +7,7 @@
       <a routerLink="/users" *ngIf="auth.loggedIn" routerLinkActive="active">Users</a>
 
       <span class="right-align">
-        <span class="ping-message" *ngIf="pingByUserId">{{pingByUserName}} wants to chat! <a style="text-decoration: underline" routerLink="/chat/{{pingByUserId}}">Go there!</a> </span>
+        <span class="ping-message" *ngIf="pingByUserId">{{pingByUserName}} wants to chat! <a style="text-decoration: underline" routerLink="/chat/{{pingByUserId}}" (click)="resetPing()">Go there!</a> </span>
         <a [routerLink]="" [matMenuTriggerFor]="appMenu"><img class="avatar" *ngIf="auth.userProfile$ | async as profile" [src]="profile.picture"/></a>
         <a [routerLink]="" (click)="auth.login()" *ngIf="!auth.loggedIn">Sign In</a>
     <!--    <button (click)="auth.logout()" *ngIf="auth.loggedIn">Log Out</button>-->
