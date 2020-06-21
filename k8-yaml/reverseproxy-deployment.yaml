@@ -1,23 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api
+  name: reverseproxy
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: api
+      app: reverseproxy
   template:
     metadata:
       labels:
-        app: api
+        app: reverseproxy
     spec:
       containers:
-        - name: udacity-capstone-api
-          image: udacity-capstone-api:green
+        - name: udacity-capstone-reverseproxy
+          image: patrikb/udacity-capstone-reverseproxy
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 8080
-          envFrom:
-            - configMapRef:
-                name: api-config
+

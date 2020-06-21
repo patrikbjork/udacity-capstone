@@ -8,3 +8,6 @@ data:
   PG_URL: jdbc:postgresql://postgres:5432/postgres
   PG_USERNAME: postgres
   PG_PASSWORD: postgres
+  spring.rabbitmq.host: rabbitmq
+  logging.level.org.springframework: INFO
+  logging.level.org.springframework.amqp: INFO
