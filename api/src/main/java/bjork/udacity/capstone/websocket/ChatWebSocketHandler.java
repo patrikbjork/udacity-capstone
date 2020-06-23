@@ -35,19 +35,12 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     private ChatMessageRepository chatMessageRepository;
 
     @Autowired
-    private OnlineWebSocketHandler pingWebSocketHandler;
-
-    @Autowired
     private RabbitTemplate rabbitTemplate;
 
     private Map<String, WebSocketSession> userIdsToWebSocketSessions = new HashMap<>();
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        /*JsonNode tree = JsonMapper.builder().build().readTree(message.getPayload());
-
-        String to = tree.get("to").asText();
-        String text = tree.get("text").asText();*/
         String recipient = session.getUri().getPath().split("/chat/")[1].split("/")[1];
         String sender = session.getUri().getPath().split("/chat/")[1].split("/")[0];
 
@@ -71,7 +64,6 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         rabbitTemplate.send(chatFanoutExchangeName, "chat-message", rabbitMQMessage);
     }
 
-//    @RabbitListener(queues = "chat-message-queue")
     public void deliverChatMessage(Message message) {
         String recipient = message.getMessageProperties().getHeader("recipient");
 
@@ -103,8 +95,6 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         Message message = new Message(text.getBytes(), new MessageProperties());
 
         rabbitTemplate.send(pingFanoutExchangeName, "", message);
-
-//        pingWebSocketHandler.pingUser(recipient, userId + ":" + byId.get().getName());
     }
 
     @Override
