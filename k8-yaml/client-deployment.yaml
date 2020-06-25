@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: client
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: client
   template:
     metadata:
       labels:
-        app: frontend
+        app: client
     spec:
       containers:
         - name: udacity-capstone-client
