@@ -35,7 +35,8 @@ export class UsersComponent implements OnInit {
 
       this.users$.pipe(
         tap(users => {
-          if (users.length === 0) {
+          // The user him/herself makes one.
+          if (users.length <= 1) {
             this.message = 'No users found. Let\'s make more people join :)';
           }
 
