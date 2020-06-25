@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: udacity-capstone-api
-          image: udacity-capstone-api:green
-          imagePullPolicy: "IfNotPresent"
+          image: patrikb/udacity-capstone-api
+          imagePullPolicy: "Always"
           ports:
             - containerPort: 8080
           envFrom:

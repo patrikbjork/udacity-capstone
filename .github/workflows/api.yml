@@ -26,3 +26,15 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: patrikb/udacity-capstone-api
           tag_with_ref: true
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-north-1
+      - name: Trigger deploy
+        uses: Consensys/kubernetes-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          args: apply k8-yaml/api-deployment.yaml

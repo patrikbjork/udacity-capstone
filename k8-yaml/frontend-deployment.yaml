@@ -13,9 +13,8 @@ spec:
         app: frontend
     spec:
       containers:
-        - name: udacity-capstone-frontend
-          image: udacity-capstone-frontend:blue
-          imagePullPolicy: "IfNotPresent"
+        - name: udacity-capstone-client
+          image: patrikb/udacity-capstone-client
+          imagePullPolicy: "Always"
           ports:
             - containerPort: 80
-

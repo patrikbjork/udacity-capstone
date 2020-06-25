@@ -15,7 +15,6 @@ spec:
       containers:
         - name: udacity-capstone-reverseproxy
           image: patrikb/udacity-capstone-reverseproxy
-          imagePullPolicy: "IfNotPresent"
+          imagePullPolicy: "Always"
           ports:
             - containerPort: 8080
-

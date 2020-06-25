@@ -3,7 +3,7 @@ name: Client CI
 on:
   push:
     paths:
-    - 'client/**'
+    - 'reverseproxy/**'
     - '.github/workflows/**'
 
 jobs:
@@ -16,23 +16,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Build Angular client
-      working-directory: ./client
-      run: |
-        npm install
-        npm run build-prod
-#    - run: npm test
     - name: Push to Docker Hub
       uses: docker/build-push-action@v1
       with:
-        path: ./client
+        path: ./reverseproxy
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: patrikb/udacity-capstone-client
+        repository: patrikb/udacity-capstone-reverseproxy
         tag_with_ref: true
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -45,4 +35,4 @@ jobs:
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: apply k8-yaml/client-deployment.yaml
+        args: apply k8-yaml/reverseproxy-deployment.yaml
