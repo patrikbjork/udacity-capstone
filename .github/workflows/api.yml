@@ -37,4 +37,4 @@ jobs:
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
-          args: apply k8-yaml/api-deployment.yaml
+          args: apply -f k8-yaml/api-deployment.yaml
