@@ -5,6 +5,7 @@ on:
     paths:
     - 'reverseproxy/**'
     - '.github/workflows/**'
+    - 'k8-yaml/reverseproxy*.yaml'
 
 jobs:
   reverseproxy:

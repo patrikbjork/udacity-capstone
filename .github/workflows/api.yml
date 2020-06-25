@@ -5,7 +5,8 @@ on:
     paths:
     - 'api/**'
     - '.github/workflows/**'
-
+    - 'k8-yaml/api*.yaml'
+    
 jobs:
   api:
     runs-on: ubuntu-latest

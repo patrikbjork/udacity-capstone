@@ -5,6 +5,7 @@ on:
     paths:
     - 'client/**'
     - '.github/workflows/**'
+    - 'k8-yaml/client*.yaml'
 
 jobs:
   client:
