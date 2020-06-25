@@ -6,7 +6,7 @@ metadata:
     app: reverseproxy
   annotations:
     # Note that the backend talks over HTTP.
-    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
     # TODO: Fill in with the ARN of your certificate.
     service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:eu-north-1:655010504251:certificate/4326f895-6249-45f5-9511-edcb5af863a8
     # Only run SSL on the port named "https" below.
@@ -23,6 +23,7 @@ spec:
     targetPort: 8080
   - name: https
     port: 443
+    protocol: TCP
     targetPort: 8080
   selector:
    app: reverseproxy
