@@ -20,7 +20,6 @@ export class AppComponent {
               private api: ApiService,
               private router: Router) {
     this.auth.userProfile$.subscribe(value => {
-      console.log('getUser: ' + value);
       if (value) {
         api.saveUser$().subscribe(_ => console.log('Saved user.'));
 

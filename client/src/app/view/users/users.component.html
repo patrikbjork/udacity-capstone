@@ -2,7 +2,7 @@
   <p *ngIf="message">{{message}}</p>
 
   <span *ngFor="let user of users$ | async">
-    <app-profile-card *ngIf="user.sub !== (auth.userProfile$ | async).sub" [userId]="user.sub" [name]="user.name" [online]="usersOnlineStatus.get(user.sub)"
+    <app-profile-card *ngIf="user.sub !== (auth.userProfile$ | async).sub" [userId]="user.sub" [name]="user.name" [oonline]="usersOnlineStatus.get(user.sub)"
                       [imageUrl]="user.picture"></app-profile-card>
   </span>
 

@@ -25,6 +25,7 @@ jobs:
       working-directory: ./client
       run: |
         npm install
+        npm test
         npm run build-prod
 #    - run: npm test
     - name: Push to Docker Hub
