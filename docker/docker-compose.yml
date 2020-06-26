@@ -21,12 +21,12 @@ services:
     depends_on:
       - postgres
       - rabbitmq
-  frontend:
-    image: patrikb/udacity-capstone-frontend
+  client:
+    image: patrikb/udacity-capstone-client
   reverseproxy:
     image: patrikb/udacity-capstone-reverseproxy
-    ports: 
+    ports:
      - 4200:8080
     depends_on:
      - api
-     - frontend
+     - client
