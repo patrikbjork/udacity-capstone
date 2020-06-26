@@ -31,6 +31,7 @@ The application has a number of features, such as:
 * Java 11+
 * Maven
 * NPM
+* Docker
 
 ## Building
 From the root of the project execute:
