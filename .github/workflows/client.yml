@@ -21,11 +21,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Build Angular client
+    - name: Test and build Angular client
       working-directory: ./client
       run: |
         npm install
-        npm test
+        npm run ci-test
         npm run build-prod
 #    - run: npm test
     - name: Push to Docker Hub

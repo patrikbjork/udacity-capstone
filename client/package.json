@@ -7,6 +7,7 @@
     "build": "ng build",
     "build-prod": "ng build --prod",
     "test": "ng test",
+    "ci-test": "ng test --watch=false --karma-config=karma-headless.conf.js",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
