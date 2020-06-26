@@ -31,7 +31,7 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
     this.otherUserId = this.activatedRoute.snapshot.params.userId;
 
-    this.otherUsersName = this.api.getUser(this.activatedRoute.snapshot.params.userId).pipe(
+    this.otherUsersName = this.api.getUser(encodeURI(this.activatedRoute.snapshot.params.userId)).pipe(
       map((userInfo: UserInfo) => userInfo.name)
     );
 
