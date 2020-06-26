@@ -12,12 +12,10 @@ export class ProfileCardComponent implements OnInit {
   @Input() name: string;
   @Input() userId: string;
   @Input() oonline: boolean;
-  online: boolean;
 
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    this.online = this.oonline;
   }
 
   startChatting(userId: string) {

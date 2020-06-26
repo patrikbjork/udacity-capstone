@@ -42,7 +42,7 @@ export class ChatComponent implements OnInit {
 
       this.thisUserId = userProfile.sub;
 
-      this.api.getMyConversation(this.otherUserId).subscribe((serverChatMessages: ServerChatMessage[]) => {
+      this.api.getMyConversation(encodeURI(this.otherUserId)).subscribe((serverChatMessages: ServerChatMessage[]) => {
         this.chatMessages = serverChatMessages.map(m => {
           return JSON.parse(m.data) as ChatMessage;
         });

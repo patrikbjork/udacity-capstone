@@ -1,8 +1,8 @@
 <mat-card class="example-card">
   <mat-card-header>
     <mat-card-title>{{name}}</mat-card-title>
-    <span class="status-online" *ngIf="online">Online</span>
-    <span class="status-offline" *ngIf="online === false">Offline</span>
+    <span class="status-online" *ngIf="oonline">Online</span>
+    <span class="status-offline" *ngIf="oonline === false">Offline</span>
   </mat-card-header>
   <img mat-card-image src="{{imageUrl}}">
   <mat-card-content>
