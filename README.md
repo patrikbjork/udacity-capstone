@@ -30,6 +30,7 @@ The application has a number of features, such as:
 ## Prerequisites
 * Java 11+
 * Maven
+* Node
 * NPM
 * Docker
 
