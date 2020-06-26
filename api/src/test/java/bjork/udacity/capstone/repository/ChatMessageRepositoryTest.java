@@ -16,15 +16,20 @@ class ChatMessageRepositoryTest {
 
     @BeforeEach
     public void setup() {
-        ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setUserId("user1");
-        chatMessage.setOpponentId("op1");
+        ChatMessage c1 = new ChatMessage();
+        c1.setUserId("user1");
+        c1.setOpponentId("op1");
 
-        chatMessageRepository.save(chatMessage);
+        ChatMessage c2 = new ChatMessage();
+        c2.setUserId("user1");
+        c2.setOpponentId("op1");
+
+        chatMessageRepository.save(c1);
+        chatMessageRepository.save(c2);
     }
 
     @Test
     void findByUserIdAndOpponentId() {
-        assertNotNull(chatMessageRepository.findByUserIdAndOpponentId("user1", "op1"));
+        assertNotNull(chatMessageRepository.findByUserIdAndOpponentIdOrderById("user1", "op1"));
     }
 }

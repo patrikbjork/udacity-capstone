@@ -3,7 +3,6 @@ package bjork.udacity.capstone.controller;
 import bjork.udacity.capstone.domain.ChatMessage;
 import bjork.udacity.capstone.repository.ChatMessageRepository;
 import com.auth0.spring.security.api.authentication.AuthenticationJsonWebToken;
-import com.auth0.spring.security.api.authentication.PreAuthenticatedAuthenticationJsonWebToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +32,7 @@ public class ChatMessageController {
 
         AuthenticationJsonWebToken principal = (AuthenticationJsonWebToken) request.getUserPrincipal();
 
-        return chatMessageRepository.findByUserIdAndOpponentId(principal.getName(), opponentId);
+        return chatMessageRepository.findByUserIdAndOpponentIdOrderById(principal.getName(), opponentId);
     }
 
 }
