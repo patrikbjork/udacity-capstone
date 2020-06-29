@@ -28,8 +28,8 @@ The application has a number of features, such as:
 
 
 ## Prerequisites
-* Java 11+
-* Maven
+* Java 11+ (optional)
+* Maven (optional)
 * Node
 * NPM
 * Docker
@@ -39,6 +39,12 @@ From the root of the project execute:
 
 ```
 ./build-all.sh
+```
+
+Optionally, if Java and Maven isn't install the project can be built with:
+
+```
+./build-all-less-pre-requisites.sh
 ```
 
 ## Running with docker-compose

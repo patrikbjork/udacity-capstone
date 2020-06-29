@@ -1,0 +1,16 @@
+
+version: "3"
+services:
+ api:
+  build:
+   context: ../api
+   dockerfile: Dockerfile-no-pre-req
+  image: patrikb/udacity-capstone-api
+ frontend:
+  build:
+   context: ../client
+  image: patrikb/udacity-capstone-client
+ reverseproxy:
+  build:
+   context: ../reverseproxy/docker
+  image: patrikb/udacity-capstone-reverseproxy

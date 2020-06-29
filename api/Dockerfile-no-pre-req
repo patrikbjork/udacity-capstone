@@ -1,0 +1,9 @@
+FROM maven as build
+COPY . /usr/src
+WORKDIR /usr/src
+RUN mvn package
+
+FROM openjdk:14-jdk-alpine
+ARG JAR_FILE=/usr/src/target/*.jar
+COPY --from=build  ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
