@@ -32,6 +32,7 @@ The application has a number of features, such as:
 * Maven (optional)
 * Node
 * NPM
+* Angular CLI
 * Docker
 
 ## Building
